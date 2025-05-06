@@ -1,0 +1,2 @@
+large_folder/* filter=lfs diff=lfs merge=lfs -text
+C:/Users/treyaris/Desktop/game-site-v2 filter=lfs diff=lfs merge=lfs -text
