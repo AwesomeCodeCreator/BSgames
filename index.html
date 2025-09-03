@@ -1,43 +1,4 @@
-<script type="text/javascript">
-    var gk_isXlsx = false;
-    var gk_xlsxFileLookup = {};
-    var gk_fileData = {};
-    function filledCell(cell) {
-      return cell !== '' && cell != null;
-    }
-    function loadFileData(filename) {
-    if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-      try {
-            var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-            var firstSheetName = workbook.SheetNames[0];
-            var worksheet = workbook.Sheets[firstSheetName];
-
-            // Convert sheet to JSON to filter blank rows
-            var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-            // Filter out blank rows (rows where all cells are empty, null, or undefined)
-            var filteredData = jsonData.filter(row => row.some(filledCell));
-
-            // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-            var headerRowIndex = filteredData.findIndex((row, index) =>
-              row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-            );
-            // Fallback
-            if (headerRowIndex === -1 || headerRowIndex > 25) {
-              headerRowIndex = 0;
-            }
-
-            // Convert filtered JSON back to CSV
-            var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-            csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-            return csv;
-      } catch (e) {
-            console.error(e);
-            return "";
-      }
-    }
-    return gk_fileData[filename] || "";
-    }
-    </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -137,7 +98,7 @@
 <body>
 <nav>
     <div class="logo">
-        <h1><a href="index.html">BS Company Games</a><h1>
+        <a href="index.html">BS Company Games</a>
     </div>
     <ul class="nav-links">
         <li>neither of these work yet</li>
@@ -151,60 +112,63 @@
     
     <div class="game-grid">
         <div class="game-card">
-            <a href="bomber_at_war.html">
+            <a href="game.html?id=bomber-at-war">
                 <img src="images/bomberatwar.png" alt="Bomber At War II">
                 <h3>Bomber At War II</h3>
             </a>
         </div>
         <div class="game-card">
-            <a href="warfare_1917.html">
+            <a href="game.html?id=warfare-1917">
                 <img src="images/warfare1917.png" alt="Warfare 1917">
                 <h3>Warfare 1917</h3>
             </a>
         </div>
         <div class="game-card">
-            <a href="warfare_1944.html"> <img src="images/warfare1944.png" alt="Warfare 1914">
+            <a href="game.html?id=warfare-1944">
+                <img src="images/warfare1944.png" alt="Warfare 1944">
                 <h3>Warfare 1944</h3>
             </a>
         </div>
         <div class="game-card">
-            <a href="sands.html"> <img src="images/swordsandsandles.png" alt="Learn To Fly 3">
+            <a href="game.html?id=swords-and-sandals">
+                <img src="images/swordsandsandles.png" alt="Swords And Sandals">
                 <h3>Swords And Sandals</h3>
             </a>
         </div>
         <div class="game-card">
-            <a href="coliseum.html"> <img src="images/spqr.png" alt="Game 5">
+            <a href="game.html?id=sands-of-coliseum">
+                <img src="images/spqr.png" alt="Sands of the Coliseum">
                 <h3>Sands of the Coliseum</h3>
             </a>
         </div>
         <div class="game-card">
-            <a href="peacemaker.html"> <img src="images/peacemaker.png" alt="Game 6">
+            <a href="game.html?id=peacekeeper">
+                <img src="images/peacemaker.png" alt="The Peacekeeper">
                 <h3>The Peacekeeper</h3>
             </a>
         </div>
-         <div class="game-card">
-            <a href="ltf1.html"> <img src="images/ltf1.png" alt="Game 7">
+        <div class="game-card">
+            <a href="game.html?id=learn-to-fly-1">
+                <img src="images/ltf1.png" alt="Learn to Fly 1">
                 <h3>Learn to Fly 1</h3>
             </a>
         </div>
         <div class="game-card">
-            <a href="ltf2.html"> <img src="images/ltf2.png" alt="Game 8">
+            <a href="game.html?id=learn-to-fly-2">
+                <img src="images/ltf2.png" alt="Learn to Fly 2">
                 <h3>Learn to Fly 2</h3>
             </a>
         </div>
         <div class="game-card">
-            <a href="ltf3.html"> <img src="images/ltf3.png" alt="Game 9">
+            <a href="game.html?id=learn-to-fly-3">
+                <img src="images/ltf3.png" alt="Learn to Fly 3">
                 <h3>Learn to Fly 3</h3>
             </a>
         </div>
         <div class="game-card">
-            <a href="cattle.html"> <img src="images/crazycattle.png" alt="Game 9">
-                <h3>Crazy Cattle 3D</h3>
-            </a>
-        </div>
-        <div class="game-card">
-            <a href="basket_bros.html"> <img src="images/basketbros.png" alt="Game 9">
-                <h3>Basket Bros</h3>
+            <a href="game.html?id=tu-95">
+                <img src="images/tu95.png" alt="TU-95">
+                <h3>TU-95</h3>
             </a>
         </div>
     </div>
