@@ -181,7 +181,7 @@ const gameDatabase = {
     },
     'endless-war-5': {
         title: 'Endless War 5 - Allied Campaign',
-        swfFile: 'games/endless-war-5-135913467.swf',
+        swfFile: 'games/ew5.swf',
         image: 'images/endlesswar5.png',
         description: 'Fight for the Allies in intense WWII combat',
         plays: 18,
@@ -190,7 +190,7 @@ const gameDatabase = {
     },
     'endless-war-6': {
         title: 'Endless War 6 - Soviet Campaign',
-        swfFile: 'games/endless-war-6-139873467.swf',
+        swfFile: 'games/ew6.swf',
         image: 'images/endlesswar6.png',
         description: 'Command Soviet forces in brutal Eastern Front battles',
         plays: 14,
@@ -199,7 +199,7 @@ const gameDatabase = {
     },
     'endless-war-7': {
         title: 'Endless War 7 - Axis Campaign',
-        swfFile: 'games/endless-war-7-154819c35.swf',
+        swfFile: 'games/ew7.swf',
         image: 'images/endlesswar7.png',
         description: 'Experience WWII from the Axis perspective',
         plays: 12,
