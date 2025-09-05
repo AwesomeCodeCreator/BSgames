@@ -7,12 +7,14 @@
     <script src="games.js"></script>
     <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
     <style>
-        body {
+        html, body {
             background-color: #000;
             color: #fff;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            height: 100%;
+            overflow-x: hidden;
         }
         nav {
             background-color: #f4c20d;
@@ -47,8 +49,10 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
             width: 80%;
-            margin: 20px auto;
+            margin: 20px auto 0 auto;
             text-align: center;
+            min-height: calc(100vh - 140px);
+            box-sizing: border-box;
         }
         h1 {
             color: #fff;
@@ -110,6 +114,27 @@
             font-size: 18px;
             margin-top: 50px;
         }
+        .loading-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 400px;
+            color: #666;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #f4c20d;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -119,8 +144,8 @@
         </div>
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
-            <li><a href="#">Search</a></li>
-            <li><a href="#">Games</a></li>
+            <!-- <li><a href="#" onclick="window.location.href='index.html'; setTimeout(() => toggleSearch(), 100);">Search</a></li> -->
+            <!-- <li><a href="games.html">Games</a></li> -->
         </ul>
     </nav>
     
@@ -134,7 +159,11 @@
         </div>
         
         <div class="game-container">
-            <div id="game-embed"></div>
+            <div id="loading-indicator" class="loading-indicator">
+                <div class="spinner"></div>
+                <p>Loading game...</p>
+            </div>
+            <div id="game-embed" style="display: none;"></div>
         </div>
         
         <div id="error-container" style="display: none;">
@@ -156,13 +185,20 @@
         
         function loadGame() {
             const gameId = getUrlParameter('id');
+            console.log('Game ID from URL:', gameId);
+            
             if (!gameId) {
+                console.log('No game ID found in URL');
                 showError();
                 return;
             }
             
             currentGame = getGameById(gameId);
+            console.log('Game data retrieved:', currentGame);
+            
             if (!currentGame) {
+                console.log('Game not found in database for ID:', gameId);
+                console.log('Available games:', Object.keys(gameDatabase));
                 showError();
                 return;
             }
@@ -170,18 +206,54 @@
             document.getElementById('game-title').textContent = currentGame.title + ' - BS Company Games';
             document.getElementById('main-title').textContent = currentGame.title;
             
-            // Use direct ruffle-player approach  
-            const ruffle = window.RufflePlayer.newest();
-            const player = ruffle.createPlayer();
             const container = document.getElementById("game-embed");
+            const loadingIndicator = document.getElementById("loading-indicator");
             
-            player.style.width = "800px";
-            player.style.height = "600px";
-            container.appendChild(player);
-            player.load(currentGame.swfFile);
-            
-            // Store player reference for fullscreen
-            window.currentPlayer = player;
+            // Check if it's an external URL game or SWF game
+            if (currentGame.externalUrl) {
+                // External iframe game
+                const iframe = document.createElement('iframe');
+                iframe.src = currentGame.externalUrl;
+                iframe.style.width = "1000px";
+                iframe.style.height = "800px";
+                iframe.style.border = "none";
+                iframe.allowFullscreen = true;
+                
+                iframe.onload = () => {
+                    loadingIndicator.style.display = 'none';
+                    container.style.display = 'block';
+                };
+                
+                iframe.onerror = () => {
+                    loadingIndicator.innerHTML = '<p style="color: red;">Failed to load game. <button onclick="reloadGame()">Try Again</button></p>';
+                };
+                
+                container.appendChild(iframe);
+                window.currentPlayer = iframe; // Store for fullscreen
+            } else {
+                // SWF ruffle game using ruffle-embed approach
+                const embed = document.createElement('ruffle-embed');
+                embed.setAttribute('src', currentGame.swfFile);
+                embed.style.width = '800px';
+                embed.style.height = '600px';
+                embed.style.display = 'block';
+                
+                // Hide loading indicator when game loads
+                embed.addEventListener('loadedmetadata', () => {
+                    loadingIndicator.style.display = 'none';
+                    container.style.display = 'block';
+                    console.log('Game loaded successfully');
+                });
+                
+                // Handle loading errors
+                embed.addEventListener('error', (e) => {
+                    console.error('Game loading error:', e);
+                    loadingIndicator.innerHTML = '<p style="color: red;">Failed to load game. <button onclick="reloadGame()">Try Again</button></p>';
+                });
+                
+                container.appendChild(embed);
+                window.currentPlayer = embed; // Store for fullscreen
+            }
             
             console.log('Loading game:', currentGame.title);
             console.log('Game SWF path:', currentGame.swfFile);
@@ -196,15 +268,54 @@
         function reloadGame() {
             if (currentGame) {
                 const container = document.getElementById("game-embed");
+                const loadingIndicator = document.getElementById("loading-indicator");
+                
+                // Show loading indicator and hide game
+                loadingIndicator.style.display = 'flex';
+                loadingIndicator.innerHTML = '<div class="spinner"></div><p>Loading game...</p>';
+                container.style.display = 'none';
                 container.innerHTML = '';
                 
-                const ruffle = window.RufflePlayer.newest();
-                const player = ruffle.createPlayer();
-                player.style.width = "800px";
-                player.style.height = "600px";
-                container.appendChild(player);
-                player.load(currentGame.swfFile);
-                window.currentPlayer = player;
+                if (currentGame.externalUrl) {
+                    // Reload external iframe game
+                    const iframe = document.createElement('iframe');
+                    iframe.src = currentGame.externalUrl;
+                    iframe.style.width = "1000px";
+                    iframe.style.height = "800px";
+                    iframe.style.border = "none";
+                    iframe.allowFullscreen = true;
+                    
+                    iframe.onload = () => {
+                        loadingIndicator.style.display = 'none';
+                        container.style.display = 'block';
+                    };
+                    
+                    iframe.onerror = () => {
+                        loadingIndicator.innerHTML = '<p style="color: red;">Failed to load game. <button onclick="reloadGame()">Try Again</button></p>';
+                    };
+                    
+                    container.appendChild(iframe);
+                    window.currentPlayer = iframe;
+                } else {
+                    // Reload SWF ruffle game
+                    const ruffle = window.RufflePlayer.newest();
+                    const player = ruffle.createPlayer();
+                    player.style.width = "800px";
+                    player.style.height = "600px";
+                    container.appendChild(player);
+                    
+                    player.addEventListener('loadedmetadata', () => {
+                        loadingIndicator.style.display = 'none';
+                        container.style.display = 'block';
+                    });
+                    
+                    player.addEventListener('error', () => {
+                        loadingIndicator.innerHTML = '<p style="color: red;">Failed to load game. <button onclick="reloadGame()">Try Again</button></p>';
+                    });
+                    
+                    player.load(currentGame.swfFile);
+                    window.currentPlayer = player;
+                }
             }
         }
         

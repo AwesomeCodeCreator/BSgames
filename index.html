@@ -92,86 +92,193 @@
     button:hover {
         background-color: #d1a700;
     }
+    .search-container {
+        background-color: #333;
+        padding: 15px;
+        margin: 20px auto;
+        width: 80%;
+        border-radius: 10px;
+        text-align: center;
+    }
+    .search-box {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+    }
+    #search-input {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        width: 300px;
+        max-width: 100%;
+    }
+    .game-card.hidden {
+        display: none;
+    }
+    .sort-controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    .sort-btn {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .sort-btn:hover {
+        background-color: #555;
+    }
+    .sort-btn.active {
+        background-color: #f4c20d;
+        color: #000;
+    }
+    .game-stats {
+        font-size: 12px;
+        color: #666;
+        margin-top: 5px;
+    }
+    .rating {
+        color: #f4c20d;
+        font-weight: bold;
+    }
+    .featured-badge {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: #ff6b6b;
+        color: white;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 10px;
+        font-weight: bold;
+    }
+    .game-card {
+        position: relative;
+    }
 </style>
 
 </head>
 <body>
+<script src="games.js"></script>
 <nav>
     <div class="logo">
         <a href="index.html">BS Company Games</a>
     </div>
     <ul class="nav-links">
-        <li>neither of these work yet</li>
-        <li><a href="#">Search</a></li>
-        <li><a href="#">Games</a></li>
+        <!-- <li><a href="#" onclick="toggleSearch()">Search</a></li> -->
+        <!-- <li><a href="games.html">Games</a></li> -->
     </ul>
 </nav>
 <h1>Welcome to BS Company Games!</h1>
+
+<div id="search-container" class="search-container" style="display: none;">
+    <div class="search-box">
+        <input type="text" id="search-input" placeholder="Search games..." oninput="filterGames()">
+        <button onclick="clearSearch()">Clear</button>
+    </div>
+</div>
+
 <div class="content-box">
     <h2>Our Games</h2>
     
-    <div class="game-grid">
-        <div class="game-card">
-            <a href="game.html?id=bomber-at-war">
-                <img src="images/bomberatwar.png" alt="Bomber At War II">
-                <h3>Bomber At War II</h3>
-            </a>
-        </div>
-        <div class="game-card">
-            <a href="game.html?id=warfare-1917">
-                <img src="images/warfare1917.png" alt="Warfare 1917">
-                <h3>Warfare 1917</h3>
-            </a>
-        </div>
-        <div class="game-card">
-            <a href="game.html?id=warfare-1944">
-                <img src="images/warfare1944.png" alt="Warfare 1944">
-                <h3>Warfare 1944</h3>
-            </a>
-        </div>
-        <div class="game-card">
-            <a href="game.html?id=swords-and-sandals">
-                <img src="images/swordsandsandles.png" alt="Swords And Sandals">
-                <h3>Swords And Sandals</h3>
-            </a>
-        </div>
-        <div class="game-card">
-            <a href="game.html?id=sands-of-coliseum">
-                <img src="images/spqr.png" alt="Sands of the Coliseum">
-                <h3>Sands of the Coliseum</h3>
-            </a>
-        </div>
-        <div class="game-card">
-            <a href="game.html?id=peacekeeper">
-                <img src="images/peacemaker.png" alt="The Peacekeeper">
-                <h3>The Peacekeeper</h3>
-            </a>
-        </div>
-        <div class="game-card">
-            <a href="game.html?id=learn-to-fly-1">
-                <img src="images/ltf1.png" alt="Learn to Fly 1">
-                <h3>Learn to Fly 1</h3>
-            </a>
-        </div>
-        <div class="game-card">
-            <a href="game.html?id=learn-to-fly-2">
-                <img src="images/ltf2.png" alt="Learn to Fly 2">
-                <h3>Learn to Fly 2</h3>
-            </a>
-        </div>
-        <div class="game-card">
-            <a href="game.html?id=learn-to-fly-3">
-                <img src="images/ltf3.png" alt="Learn to Fly 3">
-                <h3>Learn to Fly 3</h3>
-            </a>
-        </div>
-        <div class="game-card">
-            <a href="game.html?id=tu-95">
-                <img src="images/tu95.png" alt="TU-95">
-                <h3>TU-95</h3>
-            </a>
-        </div>
+    <!-- Sort controls hidden until popularity tracking is implemented
+    <div class="sort-controls">
+        <button class="sort-btn active" onclick="loadGames('popular')">Most Popular</button>
+        <button class="sort-btn" onclick="loadGames('featured')">Featured</button>
+        <button class="sort-btn" onclick="loadGames('rated')">Top Rated</button>
+        <button class="sort-btn" onclick="loadGames('all')">All Games</button>
+    </div>
+    -->
+    
+    <div class="game-grid" id="game-grid">
+        <!-- Games will be loaded dynamically here -->
     </div>
 </div>
+
+<script>
+let currentDisplayType = 'popular';
+
+function createGameCard(game) {
+    return `
+        <div class="game-card" data-id="${game.id}">
+            <a href="game.html?id=${game.id}">
+                <img src="${game.image}" alt="${game.title}">
+                <h3>${game.title}</h3>
+            </a>
+        </div>
+    `;
+}
+
+function loadGames(type = 'all') {
+    const gameGrid = document.getElementById('game-grid');
+    const games = getAllGames();
+    
+    // Generate HTML for all games
+    gameGrid.innerHTML = games.map(game => createGameCard(game)).join('');
+}
+
+function toggleSearch() {
+    const searchContainer = document.getElementById('search-container');
+    const searchInput = document.getElementById('search-input');
+    
+    if (searchContainer.style.display === 'none') {
+        searchContainer.style.display = 'block';
+        searchInput.focus();
+    } else {
+        searchContainer.style.display = 'none';
+        clearSearch();
+    }
+}
+
+function filterGames() {
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    const gameCards = document.querySelectorAll('.game-card');
+    
+    gameCards.forEach(card => {
+        const gameTitle = card.querySelector('h3').textContent.toLowerCase();
+        const gameId = card.dataset.id;
+        const gameData = gameDatabase[gameId];
+        const gameDescription = gameData ? gameData.description.toLowerCase() : '';
+        
+        // Search in title and description
+        if (gameTitle.includes(searchTerm) || gameDescription.includes(searchTerm)) {
+            card.classList.remove('hidden');
+        } else {
+            card.classList.add('hidden');
+        }
+    });
+}
+
+function clearSearch() {
+    document.getElementById('search-input').value = '';
+    const gameCards = document.querySelectorAll('.game-card');
+    gameCards.forEach(card => {
+        card.classList.remove('hidden');
+    });
+}
+
+// ESC key to close search
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const searchContainer = document.getElementById('search-container');
+        if (searchContainer.style.display !== 'none') {
+            toggleSearch();
+        }
+    }
+});
+
+// Load all games when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    loadGames();
+});
+</script>
 </body>
 </html>
