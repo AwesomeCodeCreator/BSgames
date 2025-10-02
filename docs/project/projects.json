@@ -1,0 +1,26 @@
+{
+  "projects": [
+    {
+      "id": "bsgames",
+      "name": "BSgames",
+      "type": "generic",
+      "created": "9/27/2025",
+      "lastUpdated": "9/27/2025",
+      "gitStatus": {
+        "modified": 5,
+        "added": 59,
+        "deleted": 0
+      }
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "projectName": "BSgames",
+    "deployedOn": "2025-09-28T04:19:38.984Z",
+    "lastUpdated": "9/27/2025",
+    "lastSync": "2025-09-28T04:19:39.852Z",
+    "projectType": "generic",
+    "gitBranch": "main"
+  },
+  "_archive_note": "For archived projects, see ./docs/project/projects-logs/"
+}

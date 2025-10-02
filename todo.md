@@ -5,13 +5,16 @@ Personal offline game hosting website for Flash (.swf) games using HTML/CSS/Java
 
 ## Current Project State
 - ✅ Dynamic HTML structure with index.html and game.html
-- ✅ Game database (games.js) with **21 games** configured and working
+- ✅ Game database (games.js) with **42 high-quality games** configured and working
 - ✅ **WORKING** Ruffle Flash emulator integration using RufflePlayer API
-- ✅ Dynamic homepage with popularity tracking system (hidden until needed)
+- ✅ Dynamic homepage with all games displaying properly
+- ✅ Search and Games navigation enabled (15+ games threshold reached)
 - ✅ Clean CSS styling with yellow/black theme
 - ✅ Game images and SWF files organized in folders
 - ✅ **FIXED** - Games load instantly through Ruffle emulator
 - ✅ **FIXED** - Bottom white bar display issue resolved
+- ✅ **FIXED** - HTML5 games integration from nano-main completed
+- ✅ **FIXED** - Multiple games.js files consolidated to single source
 - ✅ Fullscreen mode with exit button and ESC key support
 - ✅ All working games integrated and tested
 - ✅ Repository cleanup completed
@@ -134,7 +137,7 @@ Personal offline game hosting website for Flash (.swf) games using HTML/CSS/Java
 ---
 
 ## Game Database Status
-**Current games in database:** 23 games total
+**Current games in database:** 42 high-quality games total
 
 **Flash Games (SWF via Ruffle):**
 1. Bomber At War II ✅ **WORKING**
@@ -159,38 +162,66 @@ Personal offline game hosting website for Flash (.swf) games using HTML/CSS/Java
 20. Endless War 6 - Soviet Campaign ✅ **WORKING**
 21. Endless War 7 - Axis Campaign ✅ **WORKING**
 
-**External Iframe Games:**
-- Basket Bros ✅ **WORKING** (freegamesonlinee.github.io)
-- Crazy Cattle 3D ✅ **WORKING** (nealfun.app)
-- Five Nights at Freddys ✅ **WORKING** (scratch.mit.edu)
+**HTML5 Games (from nano-main):**
+22. Cookie Clicker ✅ **WORKING**
+23. Among Us ✅ **WORKING**
+24. Slope ✅ **WORKING**
+25. Run 3 ✅ **WORKING**
+26. Flappy Bird ✅ **WORKING**
+27. 1v1.lol ✅ **WORKING**
+28. Appel ✅ **WORKING**
+29. Breakout ✅ **WORKING**
+30. Burrito Bison ✅ **WORKING**
+31. Cubefield ✅ **WORKING**
+32. Death Run 3D ✅ **WORKING**
+33. Dig Dug ✅ **WORKING**
+34. Fireboy and Watergirl ✅ **WORKING**
+35. Galaga ✅ **WORKING**
+36. Getting Over It ✅ **WORKING**
+37. The Impossible Quiz ✅ **WORKING**
+38. Shell Shockers ✅ **WORKING**
+39. Snake ✅ **WORKING**
+40. Subway Surfers ✅ **WORKING**
+41. Tetris ✅ **WORKING**
+42. There Is No Game ✅ **WORKING**
+43. Townscaper ✅ **WORKING**
+44. Underrun ✅ **WORKING**
+45. UNO ✅ **WORKING**
 
-**Total**: 22 games configured and WORKING (19 SWF + 3 external iframe)
+**External Iframe Games:**
+46. Basket Bros ✅ **WORKING** (freegamesonlinee.github.io)
+47. Crazy Cattle 3D ✅ **WORKING** (nealfun.app)
+48. Five Nights at Freddys ✅ **WORKING** (scratch.mit.edu)
+
+**Total**: 48 games configured and WORKING (21 SWF + 24 HTML5 + 3 external iframe)
 
 ## Recent Major Changes Completed
 - **Dynamic Homepage**: Converted from hardcoded HTML to dynamic game loading system
-- **Game Library Expansion**: Added 9 new games (Papa's Pizzeria, Stick War series, BTD5, etc.)
-- **Popularity System**: Built rating/play tracking system (hidden until needed)
+- **Game Library Expansion**: Added 9 new Flash games (Papa's Pizzeria, Stick War series, BTD5, etc.)
+- **HTML5 Integration**: Successfully integrated 24 HTML5 games from nano-main repository
+- **Games Database Consolidation**: Fixed multiple games.js files issue, consolidated to single source
+- **Navigation Enabled**: Activated Search and Games links since library exceeded 15+ games
+- **Homepage Display Fixed**: All 48 games now display properly on homepage
+- **Popularity System**: Built rating/play tracking system with realistic play counts
 - **Display Issues**: Fixed bottom white bar problem in game.html
 - **Repository Management**: Removed broken games, cleaned up unused files
-- **Alternate Framing**: Documented ruffle-embed approach for positioning issues
+- **Massive Library Expansion**: Doubled game count from 24 to 48 games total
 
 ---
 
 ## Version History
-### Version 1.02 - Current (2025-09-04)
-**Major Refactor & Feature Implementation**
-- ✅ Unified game system (replaced 23+ individual HTML files)
-- ✅ Dynamic game loading with games.js database
-- ✅ Search functionality (hidden until needed - uncomment when 15+ games)
-- ✅ Dedicated Games page (hidden until needed - uncomment when 15+ games) 
-- ✅ Loading indicators with animated spinner and error handling
-- ✅ Repository cleanup and organization (committed all changes)
-- ✅ **POPULAR GAMES RESTORED**: Basket Bros & Crazy Cattle 3D via external iframes
-- ✅ Mixed game support: SWF (Ruffle) + External iframe games (1000x800px sizing)
-- ✅ Fixed HTML validation issues and removed unused XLSX code
+### Version 1.03 - Current (2025-09-27)
+**Complete Game Integration & Project Cleanup**
+- ✅ **HTML5 Games Integration**: Successfully added 24 HTML5 games from nano-main
+- ✅ **Games Database Consolidation**: Fixed multiple games.js confusion, single source of truth
+- ✅ **Homepage Fixed**: All 48 games now display properly with dynamic loading
+- ✅ **Navigation Activated**: Search and Games links enabled (15+ games threshold exceeded)
+- ✅ **Project Cleanup**: Archived redundant files and documentation
+- ✅ **Documentation Updated**: CLAUDE.md enhanced with comprehensive project info
 - ✅ Working fullscreen mode (native browser API with expected black bars)
-- ✅ Proper thumbnails for all games including new external games
-- ✅ Debug logging for troubleshooting game loading issues
+- ✅ Proper thumbnails for all games including new HTML5 games
+- ✅ Cache-busting headers to prevent browser caching issues
+- ✅ Repository organization and cleanup completed
 
 ### Version 1.00 - Previous Release
 - Individual HTML files for each game

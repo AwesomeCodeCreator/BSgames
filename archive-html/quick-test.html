@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quick Test</title>
+    <script src="games.js"></script>
+</head>
+<body>
+    <h1>Quick Game Count Test</h1>
+    <div id="result"></div>
+    <script>
+        const count = Object.keys(gameDatabase).length;
+        const games = Object.keys(gameDatabase);
+        document.getElementById('result').innerHTML = `
+            <p><strong>Total Games: ${count}</strong></p>
+            <p>Games: ${games.slice(0, 10).join(', ')}... and ${count - 10} more</p>
+        `;
+    </script>
+</body>
+</html>

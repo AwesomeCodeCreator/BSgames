@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>BS Company Games</title>
 <style>
     body {
@@ -173,8 +176,8 @@
         <a href="index.html">BS Company Games</a>
     </div>
     <ul class="nav-links">
-        <!-- <li><a href="#" onclick="toggleSearch()">Search</a></li> -->
-        <!-- <li><a href="games.html">Games</a></li> -->
+        <li><a href="#" onclick="toggleSearch()">Search</a></li>
+        <li><a href="test-games.html">Games</a></li>
     </ul>
 </nav>
 <h1>Welcome to BS Company Games!</h1>
@@ -207,21 +210,60 @@
 let currentDisplayType = 'popular';
 
 function createGameCard(game) {
+    const unplayableTag = game.unplayable ? '<span style="background: #ff4444; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 5px;">OFFLINE</span>' : '';
+
     return `
-        <div class="game-card" data-id="${game.id}">
+        <div class="game-card ${game.unplayable ? 'unplayable-game' : ''}" data-id="${game.id}">
             <a href="game.html?id=${game.id}">
-                <img src="${game.image}" alt="${game.title}">
-                <h3>${game.title}</h3>
+                <img src="${game.image}" alt="${game.title}" style="${game.unplayable ? 'opacity: 0.5;' : ''}">
+                <h3>${game.title}${unplayableTag}</h3>
             </a>
         </div>
     `;
 }
 
+function getAllGames() {
+    return Object.entries(gameDatabase).map(([id, data]) => ({id, ...data}));
+}
+
+function getPopularGames(limit = 24) {
+    return getAllGames()
+        .sort((a, b) => (b.plays || 0) - (a.plays || 0))
+        .slice(0, limit);
+}
+
+function getFeaturedGames() {
+    return getAllGames().filter(game => game.featured);
+}
+
+function getTopRatedGames(limit = 24) {
+    return getAllGames()
+        .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+        .slice(0, limit);
+}
+
 function loadGames(type = 'all') {
     const gameGrid = document.getElementById('game-grid');
-    const games = getAllGames();
-    
-    // Generate HTML for all games
+    let games;
+
+    // Get games based on type
+    switch(type) {
+        case 'popular':
+            games = getPopularGames(24); // Show more games now that we have 48
+            break;
+        case 'featured':
+            games = getFeaturedGames();
+            break;
+        case 'rated':
+            games = getTopRatedGames(24);
+            break;
+        case 'all':
+        default:
+            games = getAllGames();
+            break;
+    }
+
+    // Generate HTML for filtered games
     gameGrid.innerHTML = games.map(game => createGameCard(game)).join('');
 }
 
@@ -277,7 +319,18 @@ document.addEventListener('keydown', (e) => {
 
 // Load all games when page loads
 document.addEventListener('DOMContentLoaded', () => {
-    loadGames();
+    console.log('Loading all games...');
+    console.log('Total games in database:', Object.keys(gameDatabase).length);
+    loadGames('all');
+    // Force display verification
+    setTimeout(() => {
+        const gameGrid = document.getElementById('game-grid');
+        console.log('Games rendered:', gameGrid.children.length);
+        if (gameGrid.children.length === 0) {
+            console.error('No games rendered! Check browser console for errors.');
+            gameGrid.innerHTML = '<p style="color: red;">Error: Games failed to load. Check browser console for details.</p>';
+        }
+    }, 1000);
 });
 </script>
 </body>

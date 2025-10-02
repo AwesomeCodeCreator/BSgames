@@ -1,0 +1,188 @@
+{
+  "deployment": {
+    "version": "2.0.0",
+    "basedOn": "proven-implementation-patterns",
+    "author": "TEDDYMEGACORP"
+  },
+  "archiving": {
+    "sessionMaxLines": 300,
+    "jsonMaxLines": 400,
+    "archiveNamingPattern": "{name}-{date}-{version}.{ext}",
+    "dateFormat": "YYYYMMDD"
+  },
+  "projectTypes": {
+    "aws-cloud": {
+      "name": "AWS Cloud",
+      "description": "AWS cloud deployment project with infrastructure automation",
+      "sessionMaxLines": 300,
+      "jsonMaxLines": 400,
+      "features": {
+        "trackAWSCredentials": true,
+        "trackDeploymentScripts": true,
+        "trackDockerContainers": true,
+        "trackKnowledgeBase": true,
+        "trackSecrets": true
+      }
+    },
+    "react-app": {
+      "name": "React Application",
+      "description": "React web application with component-based architecture",
+      "sessionMaxLines": 300,
+      "jsonMaxLines": 400,
+      "features": {
+        "trackBuildStatus": true,
+        "trackTestCoverage": true,
+        "trackComponents": true,
+        "trackBundleSize": true,
+        "trackDependencies": true
+      }
+    },
+    "nextjs-app": {
+      "name": "Next.js Application",
+      "description": "Next.js application with server-side rendering",
+      "sessionMaxLines": 300,
+      "jsonMaxLines": 400,
+      "features": {
+        "trackBuildStatus": true,
+        "trackRoutes": true,
+        "trackAPIRoutes": true,
+        "trackStaticGeneration": true,
+        "trackPerformance": true
+      }
+    },
+    "node-api": {
+      "name": "Node.js API",
+      "description": "Node.js API service with RESTful endpoints",
+      "sessionMaxLines": 300,
+      "jsonMaxLines": 400,
+      "features": {
+        "trackEndpoints": true,
+        "trackDatabase": true,
+        "trackAuthentication": true,
+        "trackRateLimiting": true,
+        "trackTests": true
+      }
+    },
+    "python-ml": {
+      "name": "Python ML Project",
+      "description": "Python machine learning project with data science tools",
+      "sessionMaxLines": 350,
+      "jsonMaxLines": 450,
+      "features": {
+        "trackModels": true,
+        "trackDatasets": true,
+        "trackExperiments": true,
+        "trackMetrics": true,
+        "trackNotebooks": true
+      }
+    },
+    "cli-tool": {
+      "name": "CLI Tool",
+      "description": "Command-line tool with terminal interface",
+      "sessionMaxLines": 250,
+      "jsonMaxLines": 350,
+      "features": {
+        "trackCommands": true,
+        "trackOptions": true,
+        "trackConfiguration": true,
+        "trackPlugins": true,
+        "trackUsage": true
+      }
+    },
+    "docker-project": {
+      "name": "Dockerized Project",
+      "description": "Containerized application with Docker",
+      "sessionMaxLines": 300,
+      "jsonMaxLines": 400,
+      "features": {
+        "trackContainers": true,
+        "trackImages": true,
+        "trackVolumes": true,
+        "trackNetworks": true,
+        "trackCompose": true
+      }
+    },
+    "generic": {
+      "name": "Generic Project",
+      "description": "General purpose software development project",
+      "sessionMaxLines": 300,
+      "jsonMaxLines": 400,
+      "features": {
+        "trackGitStatus": true,
+        "trackFiles": true,
+        "trackConfiguration": true,
+        "trackDependencies": true,
+        "trackDocumentation": true
+      }
+    }
+  },
+  "directories": {
+    "scripts": "scripts",
+    "docs": "docs",
+    "project": "docs/project",
+    "sessionLogs": "docs/project/session-logs",
+    "todoLogs": "docs/project/todo-logs",
+    "projectsLogs": "docs/project/projects-logs",
+    "current": "docs/current",
+    "technical": "docs/technical"
+  },
+  "gitHooks": {
+    "preCommit": {
+      "enabled": true,
+      "checks": [
+        "AWS credentials",
+        "API keys",
+        "Private keys",
+        "Database credentials",
+        "JWT secrets",
+        ".env files"
+      ]
+    },
+    "prepareCommitMsg": {
+      "enabled": true,
+      "removeClaudeSignatures": true,
+      "addProjectTag": false
+    }
+  },
+  "colors": {
+    "enabled": true,
+    "scheme": {
+      "success": "green",
+      "error": "red",
+      "warning": "yellow",
+      "info": "cyan",
+      "highlight": "magenta",
+      "dim": "gray"
+    }
+  },
+  "detection": {
+    "confidenceThreshold": 0.5,
+    "minimumScore": 50,
+    "fallbackType": "generic"
+  },
+  "wizard": {
+    "quickSetup": {
+      "enabled": true,
+      "default": true
+    },
+    "customSetup": {
+      "enabled": true,
+      "askForDescription": true,
+      "askForThresholds": true,
+      "askForGitHooks": true
+    }
+  },
+  "validation": {
+    "requireGitInit": false,
+    "requireNodeVersion": 14,
+    "checkLineEndings": true,
+    "autoFixPermissions": true
+  },
+  "output": {
+    "showProgress": true,
+    "showSummary": true,
+    "showInstructions": true,
+    "useEmoji": true,
+    "verbosity": "normal"
+  }
+}
