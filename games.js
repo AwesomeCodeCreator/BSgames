@@ -161,15 +161,6 @@ const gameDatabase = {
         rating: 4.5,
         featured: false
     },
-    'pvz': {
-        title: 'Plants vs. Zombies',
-        externalUrl: 'games/html5/pvz/index.html',
-        image: 'images/pvz.png',
-        description: 'Defend your home from zombies with an army of plants',
-        plays: 389,
-        rating: 4.9,
-        featured: true
-    },
     'cookieclicker': {
         title: 'Cookie Clicker',
         externalUrl: 'games/html5/cookieclicker/index.html',
@@ -178,6 +169,17 @@ const gameDatabase = {
         plays: 267,
         rating: 4.7,
         featured: true
+    },
+    'pvz': {
+        title: 'Plants vs. Zombies',
+        externalUrl: 'games/html5/pvz/index.html',
+        image: 'images/pvz.png',
+        description: 'Defend your home from zombies with an army of plants - 252+ levels!',
+        plays: 0,
+        rating: 4.7,
+        featured: true,
+        width: 900,
+        height: 600
     },
     'amongus': {
         title: 'Among Us',
@@ -258,6 +260,15 @@ const gameDatabase = {
         description: 'Retro-style space corridor shooter',
         plays: 0,
         rating: 4.2,
+        featured: false
+    },
+    'penguin-diner': {
+        title: 'Penguin Diner',
+        swfFile: 'games/penguin_diner.swf',
+        image: 'images/penguindiner.png',
+        description: 'Serve hungry penguins at your diner in Antarctica',
+        plays: 0,
+        rating: 4.3,
         featured: false
     }
 };

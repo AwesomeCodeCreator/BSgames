@@ -81,12 +81,31 @@
             align-items: center !important;
             justify-content: center !important;
         }
-        
+
+        :fullscreen #game-embed, :-webkit-full-screen #game-embed, :-moz-full-screen #game-embed {
+            width: 100% !important;
+            height: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
         :fullscreen ruffle-player, :-webkit-full-screen ruffle-player, :-moz-full-screen ruffle-player {
-            width: 100vw !important;
-            height: 100vh !important;
-            max-width: none !important;
-            max-height: none !important;
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100vw !important;
+            max-height: 100vh !important;
+        }
+
+        :fullscreen iframe, :-webkit-full-screen iframe, :-moz-full-screen iframe {
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: auto !important;
+            height: 100% !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
         }
         #game-embed {
             width: 100%;
@@ -231,8 +250,11 @@
                 // External iframe game
                 const iframe = document.createElement('iframe');
                 iframe.src = currentGame.externalUrl;
-                iframe.style.width = "1000px";
-                iframe.style.height = "800px";
+                // Use custom dimensions if specified, otherwise default to 1000x800
+                const width = currentGame.width || 1000;
+                const height = currentGame.height || 800;
+                iframe.style.width = width + "px";
+                iframe.style.height = height + "px";
                 iframe.style.border = "none";
                 iframe.allowFullscreen = true;
 
@@ -324,8 +346,11 @@
                     // Reload external iframe game
                     const iframe = document.createElement('iframe');
                     iframe.src = currentGame.externalUrl;
-                    iframe.style.width = "1000px";
-                    iframe.style.height = "800px";
+                    // Use custom dimensions if specified, otherwise default to 1000x800
+                    const width = currentGame.width || 1000;
+                    const height = currentGame.height || 800;
+                    iframe.style.width = width + "px";
+                    iframe.style.height = height + "px";
                     iframe.style.border = "none";
                     iframe.allowFullscreen = true;
 
@@ -381,14 +406,33 @@
         }
         
         function toggleFullscreen() {
-            const player = window.currentPlayer;
-            
-            if (!document.fullscreenElement && player) {
-                player.requestFullscreen().catch(err => {
-                    console.error(`Error attempting to enable fullscreen: ${err.message} (${err.name})`);
-                });
+            const container = document.querySelector('.game-container');
+
+            if (!document.fullscreenElement) {
+                if (container) {
+                    // Request fullscreen on the container element
+                    if (container.requestFullscreen) {
+                        container.requestFullscreen().catch(err => {
+                            console.error(`Error attempting to enable fullscreen: ${err.message} (${err.name})`);
+                        });
+                    } else if (container.webkitRequestFullscreen) {
+                        container.webkitRequestFullscreen();
+                    } else if (container.mozRequestFullScreen) {
+                        container.mozRequestFullScreen();
+                    } else if (container.msRequestFullscreen) {
+                        container.msRequestFullscreen();
+                    }
+                }
             } else {
-                document.exitFullscreen();
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
             }
         }
         
