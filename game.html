@@ -82,30 +82,12 @@
             justify-content: center !important;
         }
 
-        :fullscreen #game-embed, :-webkit-full-screen #game-embed, :-moz-full-screen #game-embed {
-            width: 100% !important;
-            height: 100% !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-        }
-
-        :fullscreen ruffle-player, :-webkit-full-screen ruffle-player, :-moz-full-screen ruffle-player {
-            width: 100% !important;
-            height: 100% !important;
-            max-width: 100vw !important;
-            max-height: 100vh !important;
-        }
-
+        :fullscreen ruffle-player, :-webkit-full-screen ruffle-player, :-moz-full-screen ruffle-player,
         :fullscreen iframe, :-webkit-full-screen iframe, :-moz-full-screen iframe {
-            position: absolute !important;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            width: auto !important;
-            height: 100% !important;
-            max-width: 100% !important;
-            max-height: 100% !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: none !important;
+            max-height: none !important;
         }
         #game-embed {
             width: 100%;
