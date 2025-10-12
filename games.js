@@ -217,15 +217,6 @@ const gameDatabase = {
         rating: 4.2,
         featured: false
     },
-    'fbwg': {
-        title: 'Fireboy and Watergirl',
-        externalUrl: 'games/html5/fbwg/index.html',
-        image: 'images/fbwg.jpg',
-        description: 'Cooperative puzzle platformer adventure',
-        plays: 132,
-        rating: 4.4,
-        featured: true
-    },
     'subwaysurfers': {
         title: 'Subway Surfers',
         externalUrl: 'games/html5/subwaysurfers/index.html',
@@ -270,6 +261,15 @@ const gameDatabase = {
         plays: 0,
         rating: 4.3,
         featured: false
+    },
+    'eaglercraft': {
+        title: 'Eaglercraft 1.8.8',
+        externalUrl: 'games/html5/eaglercraft/index.html',
+        image: 'images/eaglercraft.png',
+        description: 'Minecraft 1.8.8 recreation in browser - multiplayer capable with creative and survival modes',
+        plays: 0,
+        rating: 4.8,
+        featured: true
     }
 };
 

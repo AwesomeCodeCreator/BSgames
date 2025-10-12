@@ -82,8 +82,7 @@
             justify-content: center !important;
         }
 
-        :fullscreen ruffle-player, :-webkit-full-screen ruffle-player, :-moz-full-screen ruffle-player,
-        :fullscreen iframe, :-webkit-full-screen iframe, :-moz-full-screen iframe {
+        :fullscreen ruffle-player, :-webkit-full-screen ruffle-player, :-moz-full-screen ruffle-player {
             width: 100vw !important;
             height: 100vh !important;
             max-width: none !important;
@@ -388,33 +387,14 @@
         }
         
         function toggleFullscreen() {
-            const container = document.querySelector('.game-container');
+            const player = window.currentPlayer;
 
-            if (!document.fullscreenElement) {
-                if (container) {
-                    // Request fullscreen on the container element
-                    if (container.requestFullscreen) {
-                        container.requestFullscreen().catch(err => {
-                            console.error(`Error attempting to enable fullscreen: ${err.message} (${err.name})`);
-                        });
-                    } else if (container.webkitRequestFullscreen) {
-                        container.webkitRequestFullscreen();
-                    } else if (container.mozRequestFullScreen) {
-                        container.mozRequestFullScreen();
-                    } else if (container.msRequestFullscreen) {
-                        container.msRequestFullscreen();
-                    }
-                }
+            if (!document.fullscreenElement && player) {
+                player.requestFullscreen().catch(err => {
+                    console.error(`Error attempting to enable fullscreen: ${err.message} (${err.name})`);
+                });
             } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                }
+                document.exitFullscreen();
             }
         }
         
