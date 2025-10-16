@@ -263,10 +263,10 @@ const gameDatabase = {
         featured: false
     },
     'eaglercraft': {
-        title: 'Eaglercraft 1.8.8',
+        title: 'Eaglercraft 1.5.2',
         externalUrl: 'games/html5/eaglercraft/index.html',
         image: 'images/eaglercraft.png',
-        description: 'Minecraft 1.8.8 recreation in browser - multiplayer capable with creative and survival modes',
+        description: 'Minecraft 1.5.2 recreation in browser - multiplayer capable with creative and survival modes',
         plays: 0,
         rating: 4.8,
         featured: true
