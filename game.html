@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="game-title">BS Company Games</title>
     <script src="games.js"></script>
-    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+    <script src="https://unpkg.com/@ruffle-rs/ruffle@0.4.1"></script>
     <style>
         html, body {
             background-color: #000;
@@ -66,7 +66,7 @@
             border: 2px solid #f4c20d;
             border-radius: 5px;
         }
-        
+
         :fullscreen .game-container, :-webkit-full-screen .game-container, :-moz-full-screen .game-container {
             width: 100vw !important;
             height: 100vh !important;
@@ -114,6 +114,16 @@
             font-size: 18px;
             margin-top: 50px;
         }
+        .content-notice {
+            max-width: 900px;
+            margin: 0 auto 12px;
+            padding: 8px 12px;
+            border: 1px solid #b8860b;
+            border-radius: 5px;
+            background: #fff8d6;
+            color: #4a3a00;
+            font-size: 0.9rem;
+        }
         .loading-indicator {
             display: flex;
             flex-direction: column;
@@ -148,16 +158,19 @@
             <li><a href="test-games.html">Games</a></li>
         </ul>
     </nav>
-    
+
     <h1 id="main-title">Game Loading...</h1>
-    
+
     <div class="content-box">
+        <p id="content-notice" class="content-notice" hidden>
+            This game is hosted by a third party. It may have different privacy, availability, and content policies.
+        </p>
         <div class="controls">
             <button onclick="goHome()">← Back to Games</button>
             <button onclick="reloadGame()">Reload Game</button>
             <button onclick="toggleFullscreen()">Fullscreen</button>
         </div>
-        
+
         <div class="game-container">
             <div id="loading-indicator" class="loading-indicator">
                 <div class="spinner"></div>
@@ -165,7 +178,7 @@
             </div>
             <div id="game-embed" style="display: none;"></div>
         </div>
-        
+
         <div id="error-container" style="display: none;">
             <div class="error-message">
                 Game not found! <a href="index.html">Return to home</a>
@@ -175,7 +188,7 @@
 
     <script>
         let currentGame = null;
-        
+
         function getUrlParameter(name) {
             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
             const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -203,189 +216,118 @@
         function loadGame() {
             const gameId = getUrlParameter('id');
             console.log('Game ID from URL:', gameId);
-            
+
             if (!gameId) {
                 console.log('No game ID found in URL');
                 showError();
                 return;
             }
-            
+
             currentGame = getGameById(gameId);
             console.log('Game data retrieved:', currentGame);
-            
+
             if (!currentGame) {
                 console.log('Game not found in database for ID:', gameId);
                 console.log('Available games:', Object.keys(gameDatabase));
                 showError();
                 return;
             }
-            
+
             document.getElementById('game-title').textContent = currentGame.title + ' - BS Company Games';
             document.getElementById('main-title').textContent = currentGame.title;
-            
+
+            // Check if this is a redirect-type game
+            if (currentGame.redirect && currentGame.externalUrl) {
+                // Redirect immediately to the external URL
+                console.log('Redirecting to:', currentGame.externalUrl);
+                window.location.href = currentGame.externalUrl;
+                return;
+            }
+
+            renderGame();
+        }
+
+        function renderGame() {
             const container = document.getElementById("game-embed");
             const loadingIndicator = document.getElementById("loading-indicator");
-            
-            // Check if it's an external URL game or SWF game
-            if (currentGame.externalUrl) {
-                // External iframe game
+            const notice = document.getElementById("content-notice");
+            const type = currentGame.type;
+
+            container.style.display = 'none';
+            container.innerHTML = '';
+            loadingIndicator.style.display = 'flex';
+            loadingIndicator.innerHTML = '<div class="spinner"></div><p>Loading game...</p>';
+            notice.hidden = type !== 'external';
+
+            if (type === 'external') {
                 const iframe = document.createElement('iframe');
                 iframe.src = currentGame.externalUrl;
-                // Use custom dimensions if specified, otherwise default to 1000x800
-                const width = currentGame.width || 1000;
-                const height = currentGame.height || 800;
-                iframe.style.width = width + "px";
-                iframe.style.height = height + "px";
-                iframe.style.border = "none";
-                iframe.allowFullscreen = true;
-
-                // Set timeout to show game even if onload doesn't fire
-                let loaded = false;
-                const timeout = setTimeout(() => {
-                    if (!loaded) {
-                        console.log('Timeout reached, showing game anyway');
-                        loadingIndicator.style.display = 'none';
-                        container.style.display = 'block';
-                    }
-                }, 3000); // Show after 3 seconds regardless
-
-                iframe.onload = () => {
-                    loaded = true;
-                    clearTimeout(timeout);
-                    loadingIndicator.style.display = 'none';
-                    container.style.display = 'block';
-                    console.log('Game loaded successfully');
-                };
-
-                iframe.onerror = () => {
-                    clearTimeout(timeout);
-                    loadingIndicator.innerHTML = '<p style="color: red;">Failed to load game. <button onclick="reloadGame()">Try Again</button></p>';
-                };
-
+                iframe.title = `${currentGame.title} (external game)`;
+                iframe.referrerPolicy = 'no-referrer';
+                iframe.allow = 'fullscreen; autoplay; gamepad; pointer-lock';
+                iframe.sandbox.add('allow-forms', 'allow-pointer-lock', 'allow-popups', 'allow-popups-to-escape-sandbox', 'allow-same-origin', 'allow-scripts');
+                iframe.style.width = `${currentGame.width || 1000}px`;
+                iframe.style.height = `${currentGame.height || 800}px`;
+                iframe.onload = () => showLoadedGame();
+                iframe.onerror = () => showLoadError();
                 container.appendChild(iframe);
-                window.currentPlayer = iframe; // Store for fullscreen
-            } else {
-                // SWF ruffle game using ruffle-embed approach
+                window.currentPlayer = iframe;
+            } else if (type === 'flash') {
                 const embed = document.createElement('ruffle-embed');
                 embed.setAttribute('src', currentGame.swfFile);
                 embed.style.width = '800px';
                 embed.style.height = '600px';
-                embed.style.display = 'block';
-
-                // Set timeout to show game even if loadedmetadata doesn't fire
-                let loaded = false;
-                const timeout = setTimeout(() => {
-                    if (!loaded) {
-                        console.log('Timeout reached for SWF, showing game anyway');
-                        loadingIndicator.style.display = 'none';
-                        container.style.display = 'block';
-                    }
-                }, 3000); // Show after 3 seconds regardless
-
-                // Hide loading indicator when game loads
-                embed.addEventListener('loadedmetadata', () => {
-                    loaded = true;
-                    clearTimeout(timeout);
-                    loadingIndicator.style.display = 'none';
-                    container.style.display = 'block';
-                    console.log('Game loaded successfully');
-                });
-
-                // Handle loading errors
-                embed.addEventListener('error', (e) => {
-                    clearTimeout(timeout);
-                    console.error('Game loading error:', e);
-                    loadingIndicator.innerHTML = '<p style="color: red;">Failed to load game. <button onclick="reloadGame()">Try Again</button></p>';
-                });
-
+                embed.addEventListener('loadedmetadata', showLoadedGame, { once: true });
+                embed.addEventListener('error', showLoadError, { once: true });
                 container.appendChild(embed);
-                window.currentPlayer = embed; // Store for fullscreen
+                window.currentPlayer = embed;
+            } else if (type === 'html5' || type === 'unity') {
+                const iframe = document.createElement('iframe');
+                iframe.src = currentGame.localPath;
+                iframe.title = currentGame.title;
+                iframe.allow = 'fullscreen; autoplay; gamepad; pointer-lock';
+                iframe.allowFullscreen = true;
+                iframe.style.width = `${currentGame.width || 1000}px`;
+                iframe.style.height = `${currentGame.height || 800}px`;
+                iframe.onload = () => showLoadedGame();
+                iframe.onerror = () => showLoadError();
+                container.appendChild(iframe);
+                window.currentPlayer = iframe;
+            } else {
+                showLoadError('Unknown game type.');
+                return;
             }
-            
-            console.log('Loading game:', currentGame.title);
-            console.log('Game SWF path:', currentGame.swfFile);
+
+            window.gameLoadTimeout = setTimeout(showLoadedGame, 5000);
+            console.log('Loading game:', currentGame.title, type);
         }
-        
+
+        function showLoadedGame() {
+            clearTimeout(window.gameLoadTimeout);
+            document.getElementById('loading-indicator').style.display = 'none';
+            document.getElementById('game-embed').style.display = 'block';
+        }
+
+        function showLoadError(message = 'Failed to load game.') {
+            clearTimeout(window.gameLoadTimeout);
+            const loadingIndicator = document.getElementById('loading-indicator');
+            loadingIndicator.innerHTML = `<p class="error-message">${message} <button onclick="reloadGame()">Try Again</button></p>`;
+        }
+
         function showError() {
             document.getElementById('main-title').textContent = 'Game Not Found';
             document.getElementById('error-container').style.display = 'block';
             document.querySelector('.game-container').style.display = 'none';
         }
-        
+
         function reloadGame() {
-            if (currentGame) {
-                const container = document.getElementById("game-embed");
-                const loadingIndicator = document.getElementById("loading-indicator");
-                
-                // Show loading indicator and hide game
-                loadingIndicator.style.display = 'flex';
-                loadingIndicator.innerHTML = '<div class="spinner"></div><p>Loading game...</p>';
-                container.style.display = 'none';
-                container.innerHTML = '';
-                
-                if (currentGame.externalUrl) {
-                    // Reload external iframe game
-                    const iframe = document.createElement('iframe');
-                    iframe.src = currentGame.externalUrl;
-                    // Use custom dimensions if specified, otherwise default to 1000x800
-                    const width = currentGame.width || 1000;
-                    const height = currentGame.height || 800;
-                    iframe.style.width = width + "px";
-                    iframe.style.height = height + "px";
-                    iframe.style.border = "none";
-                    iframe.allowFullscreen = true;
-
-                    // Set timeout to show game even if onload doesn't fire
-                    let loaded = false;
-                    const timeout = setTimeout(() => {
-                        if (!loaded) {
-                            console.log('Timeout reached, showing game anyway');
-                            loadingIndicator.style.display = 'none';
-                            container.style.display = 'block';
-                        }
-                    }, 3000);
-
-                    iframe.onload = () => {
-                        loaded = true;
-                        clearTimeout(timeout);
-                        loadingIndicator.style.display = 'none';
-                        container.style.display = 'block';
-                    };
-
-                    iframe.onerror = () => {
-                        clearTimeout(timeout);
-                        loadingIndicator.innerHTML = '<p style="color: red;">Failed to load game. <button onclick="reloadGame()">Try Again</button></p>';
-                    };
-
-                    container.appendChild(iframe);
-                    window.currentPlayer = iframe;
-                } else {
-                    // Reload SWF ruffle game
-                    const ruffle = window.RufflePlayer.newest();
-                    const player = ruffle.createPlayer();
-                    player.style.width = "800px";
-                    player.style.height = "600px";
-                    container.appendChild(player);
-                    
-                    player.addEventListener('loadedmetadata', () => {
-                        loadingIndicator.style.display = 'none';
-                        container.style.display = 'block';
-                    });
-                    
-                    player.addEventListener('error', () => {
-                        loadingIndicator.innerHTML = '<p style="color: red;">Failed to load game. <button onclick="reloadGame()">Try Again</button></p>';
-                    });
-                    
-                    player.load(currentGame.swfFile);
-                    window.currentPlayer = player;
-                }
-            }
+            if (currentGame) renderGame();
         }
-        
+
         function goHome() {
             window.location.href = 'index.html';
         }
-        
+
         function toggleFullscreen() {
             const player = window.currentPlayer;
 
@@ -397,7 +339,7 @@
                 document.exitFullscreen();
             }
         }
-        
+
         // Ensure everything is loaded before starting
         window.addEventListener('DOMContentLoaded', () => {
             console.log('DOM loaded, checking for dependencies...');
@@ -428,7 +370,7 @@
                 }, 3000);
             }
         });
-        
+
         // Update button text based on fullscreen state
         document.addEventListener('fullscreenchange', () => {
             const button = document.querySelector('button[onclick="toggleFullscreen()"]');

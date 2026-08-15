@@ -1,0 +1,44 @@
+# Local secrets and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+**/credentials/**
+**/secrets/**
+**/Secret.txt
+
+# Local assistant/editor configuration
+.claude/
+.vscode/
+.idea/
+
+# OS and temporary files
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+.cache/
+node_modules/
+
+# Local test artifacts
+coverage/
+playwright-report/
+test-results/
+
+# Local-only project history, tooling, and planning material
+/CLAUDE.md
+/archive-docs/
+/archive-html/
+/backup-games-js/
+/Eaglercraft1.5.2-main/
+/nano-main/
+/genie/
+/subagents/
+/docs/project/
+/save
+/load
+/scripts/

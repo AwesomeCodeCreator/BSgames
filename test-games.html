@@ -110,11 +110,7 @@
         ];
 
         function detectGameType(game) {
-            if (game.externalUrl) return 'external';
-            if (game.unityData) return 'unity';
-            if (game.html5Path) return 'html5';
-            if (game.swfFile) return 'flash';
-            return 'unknown';
+            return game.type || 'unknown';
         }
 
         function renderGames(filter = 'all') {

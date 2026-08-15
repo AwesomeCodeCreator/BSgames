@@ -1,11 +1,15 @@
 # BS Company Games - Todo List
 
+> GitHub ownership migration is tracked in `docs/github-migration.md`; do not push until its privacy gate passes.
+
+> Current counts and operating instructions are maintained in README.md and docs/maintenance.md. Historical status entries below are retained for context and are not authoritative.
+
 ## Project Overview
 Personal offline game hosting website for Flash (.swf) games using HTML/CSS/JavaScript with Ruffle Flash emulation.
 
 ## Current Project State
 - ✅ Dynamic HTML structure with index.html and game.html
-- ✅ Game database (games.js) with **42 high-quality games** configured and working
+- ✅ Game database (games.js) with **the current catalog** configured and working
 - ✅ **WORKING** Ruffle Flash emulator integration using RufflePlayer API
 - ✅ Dynamic homepage with all games displaying properly
 - ✅ Search and Games navigation enabled (15+ games threshold reached)
@@ -137,7 +141,7 @@ Personal offline game hosting website for Flash (.swf) games using HTML/CSS/Java
 ---
 
 ## Game Database Status
-**Current games in database:** 42 high-quality games total
+**Current games in database:** See the validated catalog counts in README.md and docs/maintenance.md.
 
 **Flash Games (SWF via Ruffle):**
 1. Bomber At War II ✅ **WORKING**
@@ -193,7 +197,7 @@ Personal offline game hosting website for Flash (.swf) games using HTML/CSS/Java
 47. Crazy Cattle 3D ✅ **WORKING** (nealfun.app)
 48. Five Nights at Freddys ✅ **WORKING** (scratch.mit.edu)
 
-**Total**: 48 games configured and WORKING (21 SWF + 24 HTML5 + 3 external iframe)
+**Total**: See the validated catalog counts in README.md and docs/maintenance.md.
 
 ## Recent Major Changes Completed
 - **Dynamic Homepage**: Converted from hardcoded HTML to dynamic game loading system
@@ -201,11 +205,11 @@ Personal offline game hosting website for Flash (.swf) games using HTML/CSS/Java
 - **HTML5 Integration**: Successfully integrated 24 HTML5 games from nano-main repository
 - **Games Database Consolidation**: Fixed multiple games.js files issue, consolidated to single source
 - **Navigation Enabled**: Activated Search and Games links since library exceeded 15+ games
-- **Homepage Display Fixed**: All 48 games now display properly on homepage
+- **Homepage Display Fixed**: The active catalog renders from games.js.
 - **Popularity System**: Built rating/play tracking system with realistic play counts
 - **Display Issues**: Fixed bottom white bar problem in game.html
 - **Repository Management**: Removed broken games, cleaned up unused files
-- **Massive Library Expansion**: Doubled game count from 24 to 48 games total
+- **Library maintenance**: Keep catalog counts derived from games.js.
 
 ---
 
@@ -214,7 +218,7 @@ Personal offline game hosting website for Flash (.swf) games using HTML/CSS/Java
 **Complete Game Integration & Project Cleanup**
 - ✅ **HTML5 Games Integration**: Successfully added 24 HTML5 games from nano-main
 - ✅ **Games Database Consolidation**: Fixed multiple games.js confusion, single source of truth
-- ✅ **Homepage Fixed**: All 48 games now display properly with dynamic loading
+- ✅ **Homepage Fixed**: The homepage renders the active games.js catalog dynamically
 - ✅ **Navigation Activated**: Search and Games links enabled (15+ games threshold exceeded)
 - ✅ **Project Cleanup**: Archived redundant files and documentation
 - ✅ **Documentation Updated**: CLAUDE.md enhanced with comprehensive project info
@@ -253,22 +257,22 @@ Personal offline game hosting website for Flash (.swf) games using HTML/CSS/Java
 
 **Start localhost server:**
 ```bash
-cd /mnt/c/Users/treyaris/Desktop/BSgames
+cd /mnt/c/Users/<username>/Documents/BSgames
 python3 -m http.server 8000
 # Then go to: http://localhost:8000
 ```
 
 **Download game with wget:**
 ```bash
-cd /mnt/c/Users/treyaris/Desktop/BSgames/downloaded/
+cd /mnt/c/Users/<username>/Documents/BSgames/downloaded/
 wget -r -np -k -E -p https://example.com/game-url
 ```
 
 **Navigate to project in WSL:**
 ```bash
-cd /mnt/c/Users/treyaris/Desktop/BSgames
+cd /mnt/c/Users/<username>/Documents/BSgames
 # OR create alias:
-alias games='cd /mnt/c/Users/treyaris/Desktop/BSgames'
+alias games='cd /mnt/c/Users/<username>/Documents/BSgames'
 ```
 
 **Hard refresh to clear cache:**
