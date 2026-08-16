@@ -1,4 +1,14 @@
 const gameDatabase = {
+    'slope': {
+        type: 'html5',
+        title: 'Slope',
+        localPath: 'games/html5/slope/index.html',
+        image: 'images/slope.jpg',
+        description: 'High-speed 3D endless runner',
+        plays: 154,
+        rating: 4.6,
+        featured: true
+    },
     'bomber-at-war-1': {
         type: 'flash',
         title: 'Bomber At War 1',
@@ -211,16 +221,6 @@ const gameDatabase = {
         rating: 4.6,
         featured: true
     },
-    'slope': {
-        type: 'html5',
-        title: 'Slope',
-        localPath: 'games/html5/slope/index.html',
-        image: 'images/slope.jpg',
-        description: 'High-speed 3D endless runner',
-        plays: 154,
-        rating: 4.6,
-        featured: true
-    },
     'run3': {
         type: 'html5',
         title: 'Run 3',
@@ -269,26 +269,6 @@ const gameDatabase = {
         description: 'Relaxing town building and design game',
         plays: 0,
         rating: 4.4,
-        featured: false
-    },
-    'underrun': {
-        type: 'html5',
-        title: 'Underrun',
-        localPath: 'games/html5/underrun/index.html',
-        image: 'images/underrun.jpg',
-        description: 'Retro-style space corridor shooter',
-        plays: 0,
-        rating: 4.2,
-        featured: false
-    },
-    'penguin-diner': {
-        type: 'flash',
-        title: 'Penguin Diner',
-        swfFile: 'games/penguin_diner.swf',
-        image: 'images/penguindiner.png',
-        description: 'Serve hungry penguins at your diner in Antarctica',
-        plays: 0,
-        rating: 4.3,
         featured: false
     },
     'eaglercraft': {

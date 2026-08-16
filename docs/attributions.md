@@ -29,7 +29,7 @@ original web games. Known credits include Orteil (Cookie Clicker), Griffpatch
 (Appel/Scratch), Blue Wizard Digital (Basket Bros and Shell Shockers), Juicy
 Beast (Burrito Bison), Nils Asejevs (Cubefield), Oslo Albet (Fireboy and
 Watergirl), Bennett Foddy (Getting Over It), Splapp-Me-Do (The Impossible
-Quiz), Oskar Stålberg (Townscaper), and Dominic Szablewski (Underrun).
+Quiz), and Oskar Stålberg (Townscaper).
 
 The Unity entries include Slope, Subway Surfers, and Deathrun 3D. Their
 original creators and licensors retain ownership of their names, brands, and
