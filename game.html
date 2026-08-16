@@ -114,16 +114,6 @@
             font-size: 18px;
             margin-top: 50px;
         }
-        .content-notice {
-            max-width: 900px;
-            margin: 0 auto 12px;
-            padding: 8px 12px;
-            border: 1px solid #b8860b;
-            border-radius: 5px;
-            background: #fff8d6;
-            color: #4a3a00;
-            font-size: 0.9rem;
-        }
         .loading-indicator {
             display: flex;
             flex-direction: column;
@@ -162,9 +152,6 @@
     <h1 id="main-title">Game Loading...</h1>
 
     <div class="content-box">
-        <p id="content-notice" class="content-notice" hidden>
-            This game is hosted by a third party. It may have different privacy, availability, and content policies.
-        </p>
         <div class="controls">
             <button onclick="goHome()">← Back to Games</button>
             <button onclick="reloadGame()">Reload Game</button>
@@ -250,15 +237,12 @@
         function renderGame() {
             const container = document.getElementById("game-embed");
             const loadingIndicator = document.getElementById("loading-indicator");
-            const notice = document.getElementById("content-notice");
             const type = currentGame.type;
 
             container.style.display = 'none';
             container.innerHTML = '';
             loadingIndicator.style.display = 'flex';
             loadingIndicator.innerHTML = '<div class="spinner"></div><p>Loading game...</p>';
-            notice.hidden = type !== 'external';
-
             if (type === 'external') {
                 const iframe = document.createElement('iframe');
                 iframe.src = currentGame.externalUrl;
